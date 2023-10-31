@@ -2,9 +2,19 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:peliculas_examen/pages/pagina_detalles.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:peliculas_examen/cubit.dart';
 
 void main() {
-  runApp(MyApp());
+  final cartCubit = MovieCubit();
+  runApp(
+    MultiBlocProvider(
+      providers: [
+        BlocProvider.value(value: cartCubit),
+      ],
+      child: MyApp(),
+    ),
+  );
 }
 
 class Movie {
@@ -120,9 +130,8 @@ class _MyAppState extends State<MyApp> {
                         icon: Icon(Icons.remove),
                         onPressed: () {
                           if (movie.cantidadEntradas > 0) {
-                            setState(() {
-                              movie.cantidadEntradas--;
-                            });
+                            final cartCubit = BlocProvider.of<MovieCubit>(context);
+                            cartCubit.restar(movie);
                           }
                         },
                       ),
@@ -130,9 +139,8 @@ class _MyAppState extends State<MyApp> {
                       IconButton(
                         icon: Icon(Icons.add),
                         onPressed: () {
-                          setState(() {
-                            movie.cantidadEntradas++;
-                          });
+                          final cartCubit = BlocProvider.of<MovieCubit>(context);
+                          cartCubit.aumentar(movie);
                         },
                       ),
                     ],
