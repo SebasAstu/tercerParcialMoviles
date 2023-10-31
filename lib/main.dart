@@ -34,7 +34,7 @@ class Movie {
   final int voteCount;
   double precio;
   int cantidadEntradas;
-  
+
   bool confirmaCompra;
 
   Movie({
@@ -92,14 +92,16 @@ class _MyAppState extends State<MyApp> {
   }
 
   Future<void> fetchDataFromApi() async {
-    final response = await http.get(Uri.parse('https://api.themoviedb.org/3/discover/movie?sort_by=popularity.desc&api_key=fa3e844ce31744388e07fa47c7c5d8c3'));
+    final response = await http.get(Uri.parse(
+        'https://api.themoviedb.org/3/discover/movie?sort_by=popularity.desc&api_key=fa3e844ce31744388e07fa47c7c5d8c3'));
 
     if (response.statusCode == 200) {
       final Map<String, dynamic> data = json.decode(response.body);
       final List<dynamic> movieList = data['results'];
 
-      final List<Movie> parsedMovies = movieList.map((json) => Movie.fromJson(json)).toList();
-
+      final List<Movie> parsedMovies =
+          movieList.map((json) => Movie.fromJson(json)).toList();
+      movies = parsedMovies;
       setState(() {
         movies = parsedMovies;
       });
@@ -123,14 +125,16 @@ class _MyAppState extends State<MyApp> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(movie.overview),
-                  Text('Precio de entrada: \$${movie.precio.toStringAsFixed(2)}'),
+                  Text(
+                      'Precio de entrada: '+ movie.precio.toStringAsFixed(2)+'Bs'),
                   Row(
                     children: [
                       IconButton(
                         icon: Icon(Icons.remove),
                         onPressed: () {
                           if (movie.cantidadEntradas > 0) {
-                            final cartCubit = BlocProvider.of<MovieCubit>(context);
+                            final cartCubit =
+                                BlocProvider.of<MovieCubit>(context);
                             cartCubit.restar(movie);
                           }
                         },
@@ -139,7 +143,8 @@ class _MyAppState extends State<MyApp> {
                       IconButton(
                         icon: Icon(Icons.add),
                         onPressed: () {
-                          final cartCubit = BlocProvider.of<MovieCubit>(context);
+                          final cartCubit =
+                              BlocProvider.of<MovieCubit>(context);
                           cartCubit.aumentar(movie);
                         },
                       ),
@@ -147,17 +152,18 @@ class _MyAppState extends State<MyApp> {
                   ),
                   ElevatedButton(
                     onPressed: () {
-                      
-                      double totalAmount = movie.precio * movie.cantidadEntradas;
+                      double totalAmount =
+                          movie.precio * movie.cantidadEntradas;
                       Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                      builder: (context) => paginaDetalles(movie: movie, totalAmount: totalAmount),
-                      ),
-                    );
-                      setState(() {
-                        movie.confirmaCompra = true;
-                      });
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => paginaDetalles(
+                              movie: movie, totalAmount: totalAmount),
+                        ),
+                      );
+                      final cartCubit =
+                              BlocProvider.of<MovieCubit>(context);
+                          cartCubit.confirmarCompra(movie);
                     },
                     child: Text('Confirmar Entradas'),
                   ),

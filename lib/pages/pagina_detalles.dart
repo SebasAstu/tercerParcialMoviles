@@ -19,9 +19,9 @@ class paginaDetalles extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text('Película: ${movie.title}'),
-            Text('Precio de entrada: \$${movie.precio.toStringAsFixed(2)}'),
+            Text('Precio de entrada:'+ movie.precio.toStringAsFixed(2)+'Bs'),
             Text('Cantidad de entradas: ${movie.cantidadEntradas}'),
-            Text('Total a pagar: \$${totalAmount.toStringAsFixed(2)}'),
+            Text('Total a pagar:'+ totalAmount.toStringAsFixed(2)+'Bs'),
           ],
         ),
       ),

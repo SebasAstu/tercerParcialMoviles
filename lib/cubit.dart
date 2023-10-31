@@ -13,7 +13,13 @@ class MovieCubit extends Cubit<List<Movie>> {
 
   void restar(Movie movie) {
     movie.cantidadEntradas--;
-    state.remove(movie);
+    state.add(movie);
+    emit(List.from(state));
+  }
+
+  void confirmarCompra(Movie movie) {
+    movie.confirmaCompra = true;
+    state.add(movie);
     emit(List.from(state));
   }
 }
