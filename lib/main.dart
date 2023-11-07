@@ -125,8 +125,9 @@ class _MyAppState extends State<MyApp> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(movie.overview),
-                  Text(
-                      'Precio de entrada: '+ movie.precio.toStringAsFixed(2)+'Bs'),
+                  Text('Precio de entrada: ' +
+                      movie.precio.toStringAsFixed(2) +
+                      'Bs'),
                   Row(
                     children: [
                       IconButton(
@@ -136,6 +137,7 @@ class _MyAppState extends State<MyApp> {
                             final cartCubit =
                                 BlocProvider.of<MovieCubit>(context);
                             cartCubit.restar(movie);
+                            setState(() {});
                           }
                         },
                       ),
@@ -146,6 +148,7 @@ class _MyAppState extends State<MyApp> {
                           final cartCubit =
                               BlocProvider.of<MovieCubit>(context);
                           cartCubit.aumentar(movie);
+                          setState(() {});
                         },
                       ),
                     ],
@@ -161,9 +164,8 @@ class _MyAppState extends State<MyApp> {
                               movie: movie, totalAmount: totalAmount),
                         ),
                       );
-                      final cartCubit =
-                              BlocProvider.of<MovieCubit>(context);
-                          cartCubit.confirmarCompra(movie);
+                      final cartCubit = BlocProvider.of<MovieCubit>(context);
+                      cartCubit.confirmarCompra(movie);
                     },
                     child: Text('Confirmar Entradas'),
                   ),
